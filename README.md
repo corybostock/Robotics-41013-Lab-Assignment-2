@@ -3,6 +3,8 @@ Students:
 - Cory Bostock 97117269
 - Cherise Tabbiner 97116533
 
+Project Name: #Saladbot
+
 Robot:  Dobot Magician with a pincer gripper end effector
 
 Project Description (100 words):
