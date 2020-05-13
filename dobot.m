@@ -47,20 +47,16 @@ classdef dobot < handle % setup the UR3 robot
         
         function GetRobot(self, roboNum) % Setup Robot Parameters
             pause(0.001);
-           L1 = Link('d',0.135,'a',0,'alpha',pi/2,'offset',0)
-
-L2 = Link('d',0,'a',0.147,'alpha',0,'offset',0)
-
-L3 = Link('d',0,'a',0.1,'alpha',0,'offset',0)
-
-L4 = Link('d',0,'a',0.02,'alpha',pi/2,'offset',0)
-
-L5 = Link('d',0,'a',0,'alpha',0,'offset',0)
+            L1 = Link('d',0.135,'a',0,'alpha',pi/2,'offset',0, 'qlim', [deg2rad(-135), deg2rad(135)])
+            L2 = Link('d',0,'a',0.147,'alpha',0,'offset',-pi/2, 'qlim', [deg2rad(5), deg2rad(80)])
+            L3 = Link('d',0,'a',0.1,'alpha',0,'offset',0, 'qlim', [deg2rad(-5), deg2rad(90)])
+            L4 = Link('d',0,'a',0.05,'alpha',pi/2,'offset',0, 'qlim', [deg2rad(-90), deg2rad(90)])
+            L5 = Link('d',0,'a',0,'alpha',0,'offset',0, 'qlim', [deg2rad(-85), deg2rad(85)])
            
                         
             pause(0.0001)
             name = ['Dobot',num2str(roboNum)];
-            self.model = SerialLink([L1 L2 L3 L4], 'name', name);             
+            self.model = SerialLink([L1 L2 L3 L4 L5], 'name', name);             
         end
                
         function [t] = limitCheck(self, jointAngles)
