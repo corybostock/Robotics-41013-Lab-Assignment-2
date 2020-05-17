@@ -10,8 +10,7 @@ floorOffset = (-1.0896/2);                                                  % me
 objectOffset = transl(0, 0 , -0.1);                                         % offset to lower endeffector onto object 
 workspace = [-2.5 2.5 -2.5 2.5 (2*floorOffset) 1];
 % workspace = [-1.5 1.5 -1.5 1.5 0 1.5];
-robonum = 1
-sawerBase = transl(0,0,0)
+robou
 
 % Init bodies
 table       = body(workspace, 'table', transl(0,0,floorOffset));                  % Dimensions of the table (x, y, z) = (1.4880, 2.3383, 1.0896)
@@ -23,7 +22,7 @@ lettuce     = body(workspace, 'lettuce', transl(0.2,0.1,0));
 onion       = body(workspace, 'onion', transl(0.15,0.15,0));
 tomatosauce = body(workspace, 'tomatosauce', transl(0.2,0.15,0));
 
-
+sawyer = dobot(workspace, 
 motion      = move();
 
 
