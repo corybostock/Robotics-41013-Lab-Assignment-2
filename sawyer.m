@@ -1,4 +1,4 @@
-classdef dobot < handle % setup the UR3 robot
+classdef sawyer < handle % setup the UR3 robot
     properties
         model;
         currentJoints;
@@ -9,12 +9,12 @@ classdef dobot < handle % setup the UR3 robot
     end
     
     methods
-        function self = dobot(workspace,roboNum, location)
+        function self = sawyer(workspace,roboNum, location)
             self.workspace = workspace;
             self.GetRobot(roboNum);
             self.currentJoints = zeros(1,6);
             self.model.base = location;
-            self.PlotAndColour();
+            % self.PlotAndColour();
             
         end
         function PlotAndColour(self)
@@ -47,16 +47,15 @@ classdef dobot < handle % setup the UR3 robot
         
         function GetRobot(self, roboNum) % Setup Robot Parameters
             pause(0.001);
-            L1 = Link('d',81,'a',317,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
-            L2 = Link('d',0,'a',192.5,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
-            L3 = Link('d',0,'a',400,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
-            L4 = Link('d',0,'a',168.5,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
-            L5 = Link('d',0,'a',400,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
-            L6 = Link('d',0,'a',136.3,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
-            L7 = Link('d',0,'a',133.75,'alpha',0,'offset',0, 'qlim', [deg2rad(0), deg2rad(535)])
-                        
+            L1 = Link('d',0.081,'a',0.317,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
+            L2 = Link('d',0,'a',0.1925,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
+            L3 = Link('d',0,'a',0.400,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
+            L4 = Link('d',0,'a',0.1685,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
+            L5 = Link('d',0,'a',0.400,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
+            L6 = Link('d',0,'a',0.1363,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
+            L7 = Link('d',0,'a',0.13375,'alpha',0,'offset',0, 'qlim', [deg2rad(5), deg2rad(535)]);
             pause(0.0001)
-            name = ['Dobot',num2str(roboNum)];
+            name = ['Sawyer',num2str(roboNum)];
             self.model = SerialLink([L1 L2 L3 L4 L5 L6 L7], 'name', name);             
         end
                
