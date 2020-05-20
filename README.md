@@ -5,7 +5,7 @@ Students:
 
 Project Name: #Saladbot
 
-Robot:  Dobot Magician with a pincer gripper end effector
+Robot:  Sawyer
 
 Project Description (100 words):
 
