@@ -47,13 +47,13 @@ classdef dobot < handle % setup the UR3 robot
         
         function GetRobot(self, roboNum) % Setup Robot Parameters
             pause(0.001);
-            L1 = Link('d',0.3170,'a',0,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
-            L2 = Link('d',0.1925,'a',0,'alpha',pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
-            L3 = Link('d',0.4000,'a',0,'alpha',pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
-            L4 = Link('d',0.1685,'a',0,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
-            L5 = Link('d',0.2735,'a',0,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
-            L6 = Link('d',0.1363,'a',0,'alpha',pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
-            L7 = Link('d',0.13375,'a',0,'alpha',0,'offset',0, 'qlim', [deg2rad(0), deg2rad(535)])
+            L1 = Link('d',81,'a',317,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
+            L2 = Link('d',0,'a',192.5,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
+            L3 = Link('d',0,'a',400,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
+            L4 = Link('d',0,'a',168.5,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
+            L5 = Link('d',0,'a',400,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
+            L6 = Link('d',0,'a',136.3,'alpha',-pi/2,'offset',0, 'qlim', [deg2rad(0), deg2rad(345)])
+            L7 = Link('d',0,'a',133.75,'alpha',0,'offset',0, 'qlim', [deg2rad(0), deg2rad(535)])
                         
             pause(0.0001)
             name = ['Dobot',num2str(roboNum)];
