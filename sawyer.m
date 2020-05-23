@@ -12,7 +12,7 @@ classdef sawyer < handle % setup the UR3 robot
         function self = sawyer(workspace,roboNum, location)
             self.workspace = workspace;
             self.GetRobot(roboNum);
-            self.currentJoints = zeros(1,6);
+            self.currentJoints = zeros(1,7);
             self.model.base = location;
             % self.PlotAndColour();
             
