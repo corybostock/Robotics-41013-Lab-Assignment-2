@@ -5,26 +5,33 @@ clf
 clear
 
 % Init Workspace
- startup_rvc;                                                                % Ensuring robotics toolbox is active and functional
-floorOffset = (-1.0896/2);                                                  % measured height or table in body0.ply
-objectOffset = transl(0, 0 , -0.1);                                         % offset to lower endeffector onto object 
-workspace = [-2.5 2.5 -2.5 2.5 (2*floorOffset) 1];
-% workspace = [-1.5 1.5 -1.5 1.5 0 1.5];
-robonum = 1
-sawerBase = transl(0,0,0)
+% startup_rvc;                                                                % Ensuring robotics toolbox is active and functional
 
-% Init bodies
-% table       = body(workspace, 'table', transl(0,0,floorOffset));                  % Dimensions of the table (x, y, z) = (1.4880, 2.3383, 1.0896)
-% bowl        = body(workspace, 'Bowl', transl(0,0,0));
-% mushroom    = body(workspace, 'mushroom', transl(0.1,0,0));
-% tomato      = body(workspace, 'tomato', transl(0.2,0,0));
-carrot      = body(workspace, 'carrot', transl(0.1,0.1,0));
-lettuce     = body(workspace, 'lettuce', transl(0.2,0.1,0));
-onion       = body(workspace, 'onion', transl(0.15,0.15,0));
-tomatosauce = body(workspace, 'tomatosauce', transl(0.2,0.15,0));
+mode = 1;
+switch (mode)
+    case 0
+        run('gui.mlapp');        
+    case 1
+       floorOffset = (-1.0896/2);                                                  % measured height or table in body0.ply
+       objectOffset = transl(0, 0 , -0.1);                                         % offset to lower endeffector onto object 
+       workSpace = [-2.5 2.5 -2.5 2.5 (2*floorOffset) 2];
+       sawyerBase = transl(0,0,0);
 
-sawyer1     = sawyer(workspace, 1, transl(0,0,0));
+       % Init Sawyer
+       motion      = move();
+       sawyer1     = sawyer(workSpace, 1, sawyerBase);
+       % Init bodies
+       table       = body(workSpace, 'table', transl(0,0,floorOffset));            % Dimensions of the table (x, y, z) = (1.4880, 2.3383, 1.0896)
+       bowl        = body(workSpace, 'Bowl', transl(0,0,0));
+       mushroom    = body(workSpace, 'mushroom', transl(0.1,0,0));
+       tomato      = body(workSpace, 'tomato', transl(0.2,0,0));
+       carrot      = body(workSpace, 'carrot', transl(0.1,0.1,0));
+       lettuce     = body(workSpace, 'lettuce', transl(0.2,0.1,0));
+       onion       = body(workSpace, 'onion', transl(0.15,0.15,0));
+       tomatosauce = body(workSpace, 'tomatosauce', transl(0.2,0.15,0)); 
+end
 
-motion      = move();
-sawyer1.model.teach();
+
+
+
 
