@@ -19,7 +19,7 @@ classdef move < handle % Movement of robots or bodies
             for step = 1:size(trajectory,1)
                 q = trajectory(step,:);
                 robot.model.animate(q);
-                dataLogger(robot);
+                %dataLogger(robot);
                 pause(0.001);
             end
         end
@@ -34,7 +34,7 @@ classdef move < handle % Movement of robots or bodies
                 endefect = robot.model.fkine(q);
                 part.model.base = endefect * trotx(pi);
                 part.model.animate(0);
-                dataLogger(robot);
+                %dataLogger(robot);
                 pause(0.001);
             end
         end
@@ -53,7 +53,7 @@ classdef move < handle % Movement of robots or bodies
                 part1.model.animate(0);
                 part2.model.animate(0);
                 part3.model.animate(0);
-                dataLogger(robot);
+                %dataLogger(robot);
                 pause(0.001);
             end
         end
