@@ -3,8 +3,11 @@ set(0,'DefaultFigureWindowStyle','docked')
 clc
 clf
 clear
-workSpace = [-6 6 -6 0 -2 6];
-
+floorOffset = (-1.0896/2);  
+workSpace = [-2.5 2.5 -2.5 2.5 (2*floorOffset) 2];
+sawyerBase = transl(0,0,0);
+motion = move();
+sawyer1 = sawyer(workSpace, 1, sawyerBase);
 mdl_puma560
 q = [0,0,0,0,0,0];
 p560.plot(q)
