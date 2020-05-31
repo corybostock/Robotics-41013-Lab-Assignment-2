@@ -6,15 +6,19 @@ classdef sawyer < handle % setup the UR3 robot
         workspace;
         plyData;
         radius;
+        defaultq;
     end
     
     methods
         function self = sawyer(workspace,roboNum, location)
             self.workspace = workspace;
             self.GetRobot(roboNum);
-            self.currentJoints = zeros(1,7);;
+            self.defaultq = [90 270 5 180 5 180 90];
+            self.defaultq = deg2rad(self.defaultq);
+            self.currentJoints = self.defaultq;
             self.model.base = location;
             self.PlotAndColour(self.currentJoints);
+%             self.model.plot(self.defaultq);
             
         end
         function PlotAndColour(self, q)
@@ -48,13 +52,13 @@ classdef sawyer < handle % setup the UR3 robot
         function GetRobot(self, roboNum) % Setup Robot Parameters
             pause(0.001);
             L0 = Link('d',0.317,    'a',0.081,      'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
-            L1 = Link('d',0,        'a',0.1925,     'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
-            L2 = Link('d',0,        'a',0.400,      'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
-            L3 = Link('d',0,        'a',0.1685,     'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
-            L4 = Link('d',0,        'a',0.400,      'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
-            L5 = Link('d',0,        'a',0.1363,     'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
-            L6 = Link('d',0,        'a',0.13375,    'alpha',0,      'offset',0, 'qlim', [deg2rad(5), deg2rad(535)]);
-            pause(0.0001)
+            L1 = Link('d',0.1925,   'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
+            L2 = Link('d',0.4,      'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
+            L3 = Link('d',0.1685,   'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
+            L4 = Link('d',0.4,      'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
+            L5 = Link('d',0.1363,   'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
+            L6 = Link('d',0.13375,  'a',0,          'alpha',0,      'offset',0, 'qlim', [deg2rad(5), deg2rad(535)]);
+            pause(0.0001);
             name = ['Sawyer',num2str(roboNum)];
             self.model = SerialLink([L0 L1 L2 L3 L4 L5 L6], 'name', name);             
         end
