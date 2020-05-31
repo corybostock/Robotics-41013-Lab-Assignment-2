@@ -15,6 +15,7 @@ switch (mode)
        floorOffset = (-1.0896/2);                                                  % measured height or table in body0.ply
        objectOffset = transl(0, 0 , -0.1);                                         % offset to lower endeffector onto object 
        workSpace = [-2.5 2.5 -2.5 2.5 (2*floorOffset) 2];
+       workSpace = [-1 1 -1 1 -0.1 1];
        sawyerBase = transl(0,0,0);
 
        % Init Sawyer

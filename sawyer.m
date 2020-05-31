@@ -13,12 +13,12 @@ classdef sawyer < handle % setup the UR3 robot
         function self = sawyer(workspace,roboNum, location)
             self.workspace = workspace;
             self.GetRobot(roboNum);
-            self.defaultq = [90 90 5 180 5 180 90];
+            self.defaultq = [90 270 5 180 5 180 90];
             self.defaultq = deg2rad(self.defaultq);
             self.currentJoints = self.defaultq;
             self.model.base = location;
-            %self.PlotAndColour(self.currentJoints);
-            self.model.plot(self.defaultq);
+            self.PlotAndColour(self.currentJoints);
+%             self.model.plot(self.defaultq);
             
         end
         function PlotAndColour(self, q)
