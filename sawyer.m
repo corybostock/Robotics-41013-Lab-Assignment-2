@@ -17,10 +17,9 @@ classdef sawyer < handle % setup the UR3 robot
             self.defaultq = deg2rad(self.defaultq);
             self.currentJoints = self.defaultq;
             self.model.base = location;
-            self.PlotAndColour(self.currentJoints);
-%             self.model.plot(self.defaultq);
-            
+            self.PlotAndColour(self.currentJoints);            
         end
+        
         function PlotAndColour(self, q)
             for linkIndex = 0:self.model.n
                 [ faceData, vertexData, plyData{linkIndex + 1} ] = plyread(['L',num2str(linkIndex),'.ply'],'tri');
