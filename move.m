@@ -5,13 +5,14 @@ classdef move < handle % Movement of robots or bodies
     methods
         function self = move()
            
-        end     
+        end
         
         function rmrcStartToEnd(self, robot, startPose, endPose)
             t = 1;                                                          % Total time (s)
             deltaT = 0.02;                                                  % Control frequency
             steps = t/deltaT;                                               % No. of steps for simulation
-            epsilon = 0.1;                                                  % Threshold value for manipulability/Damped Least Squares
+            lambdaThreshhold = 0.065;                                       % Threshold value for manipulability/Damped Least Squares
+            dapmingValue = 0.75;
             W = diag([1 1 1 0.1 0.1 0.1]);                                  % Weighting matrix for the velocity vector
 
             % Allocate array data
@@ -42,8 +43,10 @@ classdef move < handle % Movement of robots or bodies
 
             T = [rpy2r(theta(1,1),theta(2,1),theta(3,1)) x(:,1);zeros(1,3) 1];          % Create transformation of first point and angle
             q0 = zeros(1,robot.model.n);                                                % Initial guess for joint angles
+            % testing
+            %q0 = robot.model.getpos();
+            % testing
             qMatrix(1,:) = robot.model.ikcon(T,q0);                                     % Solve joint angles to achieve first waypoint
-            qMatrix(1,:) = robot.model.getpos;
 
             % Track the trajectory with RMRC
             for i = 1:steps-1
@@ -58,14 +61,14 @@ classdef move < handle % Movement of robots or bodies
                 deltaTheta = tr2rpy(Rd*Ra');                                            % Convert rotation matrix to RPY angles
                 xdot = W*[linear_velocity;angular_velocity];                          	% Calculate end-effector velocity to reach next waypoint.
                 J = robot.model.jacob0(qMatrix(i,:));                                   % Get Jacobian at current joint state
-                m(i) = sqrt(det(J*J'));
-                if m(i) < epsilon                                                       % If manipulability is less than given threshold
-                    lambda = (1 - m(i)/epsilon)*5E-2;
+                m(i) = sqrt(det(J*J'))
+                if m(i) < lambdaThreshhold                                                       % If manipulability is less than given threshold
+                    lambda = dapmingValue;
                 else
                     lambda = 0;
                 end
-                invJ = inv(J'*J + lambda *eye(robot.model.n))*J';                       % DLS Inverse
-                qdot(i,:) = (invJ*xdot)';                                               % Solve the RMRC equation (you may need to transpose the         vector)
+                invJ_dls = inv(J'*J + lambda *eye(robot.model.n))*J';                       % DLS Inverse
+                qdot(i,:) = (invJ_dls*xdot)';                                               % Solve the RMRC equation (you may need to transpose the         vector)
                 for j = 1:robot.model.n                                                 % Loop through joints 1 to 6
                     if qMatrix(i,j) + deltaT*qdot(i,j) < robot.model.qlim(j,1)          % If next joint angle is lower than joint limit...
                         qdot(i,j) = 0; % Stop the motor
@@ -78,7 +81,23 @@ classdef move < handle % Movement of robots or bodies
                 angleError(:,i) = deltaTheta;                                           % For plotting
             end
             % Plot the results
+            animateMatrix(self, robot, qMatrix);
+        end
+        
+        function animateMatrix(self, robot, qMatrix)
             robot.model.animate(qMatrix)
+%             for step = 1:1:size(qMatrix)
+%                 step
+%                 q = qMatrix(step,:)
+%                 robot.model.animate(q);
+%                 endefect = robot.model.fkine(qMatrix(step));
+%                 pause(0.001);
+%             end
+        end
+        
+        function rmrcToPointFromCurrent(self, robot, endPose)
+            startPose = robot.model.fkine(robot.model.getpos());
+            rmrcStartToEnd(self, robot, startPose, endPose);
         end
     end
 end

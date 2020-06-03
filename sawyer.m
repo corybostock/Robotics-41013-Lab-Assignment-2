@@ -14,6 +14,7 @@ classdef sawyer < handle % setup the UR3 robot
             self.workspace = workspace;
             self.GetRobot(roboNum);
             self.defaultq = [90 270 5 180 5 180 90];
+            self.defaultq = [90 120 45 200 5 45 90];
             self.defaultq = deg2rad(self.defaultq);
             self.currentJoints = self.defaultq;
             self.model.base = location;
@@ -51,7 +52,7 @@ classdef sawyer < handle % setup the UR3 robot
         function GetRobot(self, roboNum) % Setup Robot Parameters
             pause(0.001);
             L0 = Link('d',0.317,    'a',0.081,      'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
-            L1 = Link('d',0.1925,   'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
+            L1 = Link('d',0.1925,   'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(70), deg2rad(290)]);
             L2 = Link('d',0.4,      'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
             L3 = Link('d',0.1685,   'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
             L4 = Link('d',0.4,      'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(5), deg2rad(345)]);
