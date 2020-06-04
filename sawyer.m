@@ -14,7 +14,7 @@ classdef sawyer < handle % setup the UR3 robot
             self.workspace = workspace;
             self.GetRobot(roboNum);
             self.defaultq = [90 270 5 180 5 180 90];
-            self.defaultq = [90 120 45 200 5 45 90];
+            self.defaultq = [5 180 90 180 90 180 180];
             self.defaultq = deg2rad(self.defaultq);
             self.currentJoints = self.defaultq;
             self.model.base = location;
