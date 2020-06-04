@@ -8,20 +8,21 @@ clear
 hold on;
 floorOffset = (-1.0896/2);  
 workSpace = [-2.5 2.5 -2.5 2.5 (2*floorOffset) 2];
-sawyerBase = transl(0,0,0);
+sawyerBase = transl(0,0,1);
 motion = move();
 
 %put models in the workspace
 sawyer1 = sawyer(workSpace, 1, sawyerBase);
 hold on;
-table = body(workSpace, 'table', transl(0,0,floorOffset));
-r = 0.05
-radii = [r,r,r]
+table = body(workSpace, 'table', transl(0,0,0));
+%table = body(workSpace, 'table', transl(0,0,floorOffset));
+%r = 0.05
+%radii = [r,r,r]
 
 %object faces and vertices
-tableFace = table.model.faces
-tableVertex = table.model.points
-tableNormals = table.faceNormals 
+tableFace = cell2mat(table.model.faces(1));
+tableVertex = cell2mat(table.model.points(1));
+tableNormals = cell2mat(table.faceNormals(1));
 
 alpha(0.5)
 axis equal
@@ -32,10 +33,15 @@ camlight
  tr(:,:,1) = sawyer1.model.base;      %let the first matrix represent the base 
  L = sawyer1.model.links;
 % centers = zeros(7,3);
+% 
+% for i = 1 : sawyer1.model.n          %loop through and create a 4x4 matrix for each joint
+%     tr(:,:,i+1) = tr(:,:,i) * trotz(sawyer1.defaultq(i)+L(i).offset) * transl(0,0,L(i).d) * transl(L(i).a,0,0) * trotx(L(i).alpha);
+% end
 
-for i = 1 : sawyer1.model.n          %loop through and create a 4x4 matrix for each joint
-    tr(:,:,i+1) = tr(:,:,i) * trotz(sawyer1.defaultq(i)+L(i).offset) * transl(0,0,L(i).d) * transl(L(i).a,0,0) * trotx(L(i).alpha);
-end
+q = zeros(1,7)
+
+IsCollision(sawyer1.model, q, tableFace, tableVertex, tableNormals)
+return
 
 for i = 1 : size(tr,3)-1
     for faceIndex = 1:size(tableFace{1},1)
