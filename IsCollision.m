@@ -15,7 +15,7 @@ for qIndex = 1:size(qMatrix,1)
     tr = GetLinkPoses(qMatrix(qIndex,:), robot);
 
     % Go through each link and also each triangle face
-    for i = 1 : size(tr,3)-1    
+    for i = 2 : size(tr,3)-1    
         for faceIndex = 1:size(faces,1)
             vertOnPlane = vertex(faces(faceIndex,1)',:);
             [intersectP,check] = LinePlaneIntersection(faceNormals(faceIndex,:),vertOnPlane,tr(1:3,4,i)',tr(1:3,4,i+1)'); 
