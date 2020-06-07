@@ -16,7 +16,7 @@ switch (mode)
        floorOffset = (-1.0896/2);                                           % measured height or table in table.ply
        objectOffset = transl(0, 0 , -0.1);                                  % offset to lower endeffector onto object 
        workSpace = [-2.5 2.5 -2.5 2.5 (2*floorOffset) 2];
-       workSpace = [-1 1 -1 1 -0.1 1.5]; 
+       %workSpace = [-1 1 -1 1 -0.1 1.5]; 
        axis(workSpace);
        hold on;
        
@@ -36,7 +36,7 @@ switch (mode)
        
        % Init bodies
        table       = body(workSpace, 'table',       transl(0,0,floorOffset));     % Dimensions of the table (x, y, z) = (1.4880, 2.3383, 1.0896)
-       bowl        = body(workSpace, 'Bowl',        bowlBaseCoord);
+       bowl        = body(workSpace, 'bowlimproved',bowlBaseCoord);
        mushroom    = body(workSpace, 'mushroom',    mushroomBaseCoord);
        tomato      = body(workSpace, 'tomato',      tomatoBaseCoord);
        carrot      = body(workSpace, 'carrot',      carrotBaseCoord);
