@@ -31,28 +31,65 @@ axis equal
 camlight
 
 %set up positions
-targetpos = transl(-0.214,0.176,-0.155);
+targetpos = transl(-0.214,0.02,0.6);
 tempq = sawyer1.model.ikcon(targetpos);
 trajectory = jtraj(sawyer1.model.getpos(), tempq ,50);
 centers = zeros(8,3);
-%sawyer1.model.teach
+sawyer1.model.teach
 %% 
 %move the robot and check collisions
 for step = 1:size(trajectory,1)
     q = trajectory(step,:);
     IsCollision(sawyer1.model, q, tableFace, tableVertex, tableNormals)
-    
-    
+   
     if IsCollision(sawyer1.model, q, tableFace, tableVertex, tableNormals)
-        error('Collsion')
+        display('Collsion')
+        return
     else
         display('all g to keep moving')
     end
     
     sawyer1.model.animate(q);
 end
- 
-%avoid collisions
+%% avoid collisions inspired by randomly picking points within joint angle
+
+ % 3.3: Randomly select waypoints (primative RRT)
+% robot.animate(q1);
+% qWaypoints = [q1;q2];
+% isCollision = true;
+% checkedTillWaypoint = 1;
+% qMatrix = [];
+% while (isCollision)
+%     startWaypoint = checkedTillWaypoint;
+%     for i = startWaypoint:size(qWaypoints,1)-1
+%         qMatrixJoin = InterpolateWaypointRadians(qWaypoints(i:i+1,:),deg2rad(10));
+%         if ~IsCollision(robot,qMatrixJoin,faces,vertex,faceNormals)
+%             qMatrix = [qMatrix; qMatrixJoin]; %#ok<AGROW>
+%             robot.animate(qMatrixJoin);
+%             size(qMatrix)
+%             isCollision = false;
+%             checkedTillWaypoint = i+1;
+%             % Now try and join to the final goal (q2)
+%             qMatrixJoin = InterpolateWaypointRadians([qMatrix(end,:); q2],deg2rad(10));
+%             if ~IsCollision(robot,qMatrixJoin,faces,vertex,faceNormals)
+%                 qMatrix = [qMatrix;qMatrixJoin];
+%                 % Reached goal without collision, so break out
+%                 break;
+%             end
+%         else
+%             % Randomly pick a pose that is not in collision
+%             qRand = (2 * rand(1,3) - 1) * pi;
+%             while IsCollision(robot,qRand,faces,vertex,faceNormals)
+%                 qRand = (2 * rand(1,3) - 1) * pi;
+%             end
+%             qWaypoints =[ qWaypoints(1:i,:); qRand; qWaypoints(i+1:end,:)];
+%             isCollision = true;
+%             break;
+%         end
+%     end
+% end
+
+
 
 
 %% 
