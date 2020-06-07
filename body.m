@@ -4,6 +4,7 @@ classdef body < handle % class to handle setting up of the static body
         plyData;
         workspace;
         location;
+        faceNormals;
     end
     
     methods
@@ -27,6 +28,16 @@ classdef body < handle % class to handle setting up of the static body
             % Display body
             self.model.base = location;
             self.model.plot3d(0, 'workspace', workspace);
+            
+            %finding the normals to faces for collision checking
+                   
+            self.faceNormals{1} = zeros(size(faceData,1),3);
+            for faceIndex = 1:size(faceData,1)
+                v1 = vertexData(faceData(faceIndex,1)',:);
+                v2 = vertexData(faceData(faceIndex,2)',:);
+                v3 = vertexData(faceData(faceIndex,3)',:);
+                self.faceNormals{1}(faceIndex,:) = unit(cross(v2-v1,v3-v1));
+            end
             
             for linkIndex = 0:self.model.n
                 handles = findobj('Tag', self.model.name);
