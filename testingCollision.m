@@ -25,24 +25,30 @@ tableVertex = cell2mat(table.model.points(1));
 tableVertex(:,3) = tableVertex(:,3)+floorOffset;
 tableNormals = cell2mat(table.faceNormals(1));
 
+%centerpnt = [0.5,0,0.2];
+%side = 0.25;
+%plotOptions.plotFaces = true;
+%[vertex,faces,faceNormals] = RectangularPrism(centerpnt-side/2, centerpnt+side/2,plotOptions);
+
+
 %plot3(tableVertex(:,1),tableVertex(:,2), tableVertex(:,3))
 alpha(0.5)
 axis equal
 camlight
 
 %set up positions
-targetpos = transl(-0.214,0.02,0.6);
+targetpos = transl(-0.055,-0.385,1.211);
 tempq = sawyer1.model.ikcon(targetpos);
 trajectory = jtraj(sawyer1.model.getpos(), tempq ,50);
 centers = zeros(8,3);
-sawyer1.model.teach
+%sawyer1.model.teach
 %% 
 %move the robot and check collisions
 for step = 1:size(trajectory,1)
     q = trajectory(step,:);
     IsCollision(sawyer1.model, q, tableFace, tableVertex, tableNormals)
-   
-    if IsCollision(sawyer1.model, q, tableFace, tableVertex, tableNormals)
+
+    if IsCollision(sawyer1.model, q, tableFace, tableVertex, tableNormals) 
         display('Collsion')
         return
     else
@@ -54,40 +60,42 @@ end
 %% avoid collisions inspired by randomly picking points within joint angle
 
  % 3.3: Randomly select waypoints (primative RRT)
-% robot.animate(q1);
-% qWaypoints = [q1;q2];
-% isCollision = true;
-% checkedTillWaypoint = 1;
-% qMatrix = [];
-% while (isCollision)
-%     startWaypoint = checkedTillWaypoint;
-%     for i = startWaypoint:size(qWaypoints,1)-1
-%         qMatrixJoin = InterpolateWaypointRadians(qWaypoints(i:i+1,:),deg2rad(10));
-%         if ~IsCollision(robot,qMatrixJoin,faces,vertex,faceNormals)
-%             qMatrix = [qMatrix; qMatrixJoin]; %#ok<AGROW>
-%             robot.animate(qMatrixJoin);
-%             size(qMatrix)
-%             isCollision = false;
-%             checkedTillWaypoint = i+1;
-%             % Now try and join to the final goal (q2)
-%             qMatrixJoin = InterpolateWaypointRadians([qMatrix(end,:); q2],deg2rad(10));
-%             if ~IsCollision(robot,qMatrixJoin,faces,vertex,faceNormals)
-%                 qMatrix = [qMatrix;qMatrixJoin];
-%                 % Reached goal without collision, so break out
-%                 break;
-%             end
-%         else
-%             % Randomly pick a pose that is not in collision
-%             qRand = (2 * rand(1,3) - 1) * pi;
-%             while IsCollision(robot,qRand,faces,vertex,faceNormals)
-%                 qRand = (2 * rand(1,3) - 1) * pi;
-%             end
-%             qWaypoints =[ qWaypoints(1:i,:); qRand; qWaypoints(i+1:end,:)];
-%             isCollision = true;
-%             break;
-%         end
-%     end
-% end
+ q1 = sawyer1.model.getpos()
+ q2 = tempq
+sawyer1.model.animate(q1)
+qWaypoints = [q1;q2];
+isCollision = true;
+checkedTillWaypoint = 1;
+qMatrix = [];
+while (isCollision)
+    startWaypoint = checkedTillWaypoint;
+    for i = startWaypoint:size(qWaypoints,1)-1
+        qMatrixJoin = InterpolateWaypointRadians(qWaypoints(i:i+1,:),deg2rad(10));
+        if ~IsCollision(sawyer1.model,qMatrixJoin,tableFace,tableVertex,tableNormals)
+            qMatrix = [qMatrix; qMatrixJoin]; 
+            sawyer1.model.animate(qMatrixJoin);
+            size(qMatrix)
+            isCollision = false;
+            checkedTillWaypoint = i+1;
+            % Now try and join to the final goal (q2)
+            qMatrixJoin = InterpolateWaypointRadians([qMatrix(end,:); q2],deg2rad(10));
+            if ~IsCollision(sawyer1.model,qMatrixJoin,tableFace,tableVertex,tableNormals)
+                qMatrix = [qMatrix;qMatrixJoin];
+                % Reached goal without collision, so break out
+                break;
+            end
+        else
+            % Randomly pick a pose that is not in collision
+            qRand = (2 * rand(1,3) - 1) * pi;
+            while IsCollision(sawyer1.model,qMatrixJoin,tableFace,tableVertex,tableNormals)
+                qRand = (2 * rand(1,3) - 1) * pi;
+            end
+            qWaypoints =[ qWaypoints(1:i,:); qRand; qWaypoints(i+1:end,:)];
+            isCollision = true;
+            break;
+        end
+    end
+end
 
 
 
