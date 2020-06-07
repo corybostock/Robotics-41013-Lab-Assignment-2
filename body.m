@@ -10,6 +10,7 @@ classdef body < handle % class to handle setting up of the static body
     methods
         function self = body(workspace, name, location)
             self.plotAndColour(workspace, name, location);
+            self.model.delay = 0;
         end
                
         function plotAndColour(self, workspace, name, location)
