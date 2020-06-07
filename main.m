@@ -6,7 +6,7 @@ clf
 clear
 
 % Init Workspace
-% startup_rvc;                                                                % Ensuring robotics toolbox is active and functional
+ startup_rvc;                                                                % Ensuring robotics toolbox is active and functional
 
 mode = 1;
 switch (mode)
