@@ -37,41 +37,23 @@ trajectory = jtraj(sawyer1.model.getpos(), tempq ,50);
 centers = zeros(8,3);
 %sawyer1.model.teach
 %% 
-
-
-%move the robot
+%move the robot and check collisions
 for step = 1:size(trajectory,1)
     q = trajectory(step,:);
+    IsCollision(sawyer1.model, q, tableFace, tableVertex, tableNormals)
     
-    %find each link and store their centers in a matrix
-    tr = zeros(4,4,sawyer1.model.n+1);   %create a 4x4 matrix of each joint
-    tr(:,:,1) = sawyer1.model.base;      %let the first matrix represent the base
-    L = sawyer1.model.links;
     
-    for i = 1 : sawyer1.model.n          %loop through and create a 4x4 matrix for each joint
-        tr(:,:,i+1) = tr(:,:,i) * trotz(sawyer1.defaultq(i)+L(i).offset) * transl(0,0,L(i).d) * transl(L(i).a,0,0) * trotx(L(i).alpha);
-        temp = tr(:,:,i);
-        temp = temp(1:3,4)';
-        centers(i, :) = temp;
-        endEffect = sawyer1.model.fkine(sawyer1.model.getpos());
-        endEffect = endEffect(1:3,4)'
-        centers(8,:) = endEffect;
-        
-%         for i = 2: 8
-%             [X,Y,Z] = ellipsoid(centers(i,1), centers(i,2), centers(i,3), radii(1), radii(2), radii(3) );
-%             hold on;
-%             view(3);
-%             ellispoidAtOrigin_h = surf(X,Y,Z)
-%             alpha(0.1);
-%         end  
+    if IsCollision(sawyer1.model, q, tableFace, tableVertex, tableNormals)
+        error('Collsion')
+    else
+        display('all g to keep moving')
     end
     
-    
-    IsCollision(sawyer1.model, q, tableFace, tableVertex, tableNormals)
-
     sawyer1.model.animate(q);
-      
 end
+ 
+%avoid collisions
+
 
 %% 
 %set up positions
@@ -202,4 +184,28 @@ end
     centers = zeros(8,3);
     endEffect = sawyer1.model.fkine(sawyer1.model.getpos())
     endEffect = endEffect(1:3,4)'
+    
+    
+        %find each link and store their centers in a matrix
+%     tr = zeros(4,4,sawyer1.model.n+1);   %create a 4x4 matrix of each joint
+%     tr(:,:,1) = sawyer1.model.base;      %let the first matrix represent the base
+%     L = sawyer1.model.links;
+%     for i = 1 : sawyer1.model.n          %loop through and create a 4x4 matrix for each joint
+%         tr(:,:,i+1) = tr(:,:,i) * trotz(sawyer1.defaultq(i)+L(i).offset) * transl(0,0,L(i).d) * transl(L(i).a,0,0) * trotx(L(i).alpha);
+%         temp = tr(:,:,i);
+%         temp = temp(1:3,4)';
+%         centers(i, :) = temp;
+%         endEffect = sawyer1.model.fkine(sawyer1.model.getpos());
+%         endEffect = endEffect(1:3,4)'
+%         centers(8,:) = endEffect;
+%         
+%         for i = 2: 8
+%             [X,Y,Z] = ellipsoid(centers(i,1), centers(i,2), centers(i,3), radii(1), radii(2), radii(3) );
+%             hold on;
+%             view(3);
+%             ellispoidAtOrigin_h = surf(X,Y,Z)
+%             alpha(0.1);
+%         end  
+  %  end
+    
     
