@@ -47,28 +47,28 @@ switch (mode)
        tomatoSauce = body(workSpace, 'tomatosauce', tomatoSauceBaseCoord,       floorOffset);
        
        bodies = [table, bowl, knife, mushroom, tomato, carrot, lettuce, onion, tomatoSauce];
-       motion      = move(sawyer1, bodies);
+       motion = move(sawyer1, bodies);
        
        motion.rmrcToPointFromCurrent(sawyer1, knifeCoord);
-       
        motion.rmrcToPointFromCurrentWBodies(sawyer1, sawywerInit, [knife]);
-       motion.rmrcToPointFromCurrentWBodies(sawyer1, tomatoBaseCoord * transl(-0.1, 0.3, 0.26) * trotz(deg2rad(90)), [knife]);
-       motion.rmrcToPointFromCurrentWBodies(sawyer1, tomatoBaseCoord * transl(-0.1, 0.3, 0.35) * trotz(deg2rad(90)), [knife]);
-       motion.rmrcToPointFromCurrentWBodies(sawyer1, tomatoBaseCoord * transl(-0.1, 0.05, 0.35) * trotz(deg2rad(90)), [knife]);
-       motion.rmrcToPointFromCurrentWBodies(sawyer1, tomatoBaseCoord * transl(-0.1, 0.3, 0.26) * trotz(deg2rad(90)), [knife]);
+       
+       % Cutting Mushroom
+       motion.cutVeg(sawyer1, [knife], mushroomBaseCoord, transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.2, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)));
+       
+       % Cutting Tomato
+       motion.rmrcToPointFromCurrentWBodies(sawyer1, tomatoBaseCoord * transl(0,0,0.4), [knife]);
+       motion.cutVeg(sawyer1, [knife], tomatoBaseCoord,   transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.05, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)));
+       
+       % Cutting Carrot
        
        
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
-       motion.rmrcToPointFromCurrent(sawyer1, bowlBaseCoord);
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
-       motion.rmrcToPointFromCurrent(sawyer1, mushroomBaseCoord);
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
-       motion.rmrcToPointFromCurrent(sawyer1, tomatoBaseCoord);
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
-       motion.rmrcToPointFromCurrent(sawyer1, carrotBaseCoord);
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
-       motion.rmrcToPointFromCurrent(sawyer1, lettuceBaseCoord);
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
-       motion.rmrcToPointFromCurrent(sawyer1, onionBaseCoord);
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
+       % Cutting Lettuce
+       
+       
+       % Cutting Onion
+       
+       
+       % Dressing
+       
+
 end

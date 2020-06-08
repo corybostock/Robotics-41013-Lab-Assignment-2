@@ -103,8 +103,7 @@ classdef move < handle % Movement of robots or bodies
             end
         end
         
-        function animateWObjects(self, robot, qMatrix, bodies)
-            stepInterval = 10;
+        function animateWObjects(self, robot, qMatrix, bodies, stepInterval)
             for step = 1:stepInterval:size(qMatrix,1)
                 q = qMatrix(step,:);
                 robot.model.animate(q);
@@ -128,7 +127,7 @@ classdef move < handle % Movement of robots or bodies
             startPose = robot.model.fkine(robot.model.getpos());
             startQ    = robot.model.getpos();
             rmrcStartToEnd(self, robot, startPose, startQ, endPose);
-            animateWObjects(self, robot, self.qMatrix_, bodies);
+            animateWObjects(self, robot, self.qMatrix_, bodies, 30);
         end
         
         function cutVeg(self, robot, bodies, base, offset1, offset2, offset3, offset4)
