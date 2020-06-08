@@ -16,6 +16,7 @@ sawyer1 = sawyer(workSpace, 1, sawyerBase);
 hold on;
 %table = body(workSpace, 'table', transl(0,0,1));
 table = body(workSpace, 'table', transl(0,0,floorOffset));
+lightCurtain  = body(workSpace, 'fence', transl(1, 1, floorOffset));
 r = 0.05;
 radii = [r,r,r];
 
@@ -37,26 +38,15 @@ axis equal
 camlight
 
 %set up positions
-targetpos = transl(-0.055,-0.385,1.211);
+targetpos = transl(-0.055,-0.385,-0.5);
 tempq = sawyer1.model.ikcon(targetpos);
 trajectory = jtraj(sawyer1.model.getpos(), tempq ,50);
 centers = zeros(8,3);
 %sawyer1.model.teach
 %% 
 %move the robot and check collisions
-for step = 1:size(trajectory,1)
-    q = trajectory(step,:);
-    IsCollision(sawyer1.model, q, tableFace, tableVertex, tableNormals)
+robotToTable = CollisionReact(sawyer1, tableFace, tableVertex, tableNormals, trajectory)
 
-    if IsCollision(sawyer1.model, q, tableFace, tableVertex, tableNormals) 
-        display('Collsion')
-        return
-    else
-        display('all g to keep moving')
-    end
-    
-    sawyer1.model.animate(q);
-end
 %% avoid collisions inspired by randomly picking points within joint angle
 
  % 3.3: Randomly select waypoints (primative RRT)
