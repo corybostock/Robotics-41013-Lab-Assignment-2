@@ -53,7 +53,11 @@ switch (mode)
        
        motion.rmrcToPointFromCurrentWBodies(sawyer1, sawywerInit, [knife]);
        motion.rmrcToPointFromCurrentWBodies(sawyer1, tomatoBaseCoord * transl(-0.1, 0.3, 0.26) * trotz(deg2rad(90)), [knife]);
+       motion.rmrcToPointFromCurrentWBodies(sawyer1, tomatoBaseCoord * transl(-0.1, 0.3, 0.35) * trotz(deg2rad(90)), [knife]);
+       motion.rmrcToPointFromCurrentWBodies(sawyer1, tomatoBaseCoord * transl(-0.1, 0.05, 0.35) * trotz(deg2rad(90)), [knife]);
        motion.rmrcToPointFromCurrentWBodies(sawyer1, tomatoBaseCoord * transl(-0.1, 0.3, 0.26) * trotz(deg2rad(90)), [knife]);
+       
+       
        motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
        motion.rmrcToPointFromCurrent(sawyer1, bowlBaseCoord);
        motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
