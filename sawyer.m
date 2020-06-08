@@ -52,7 +52,7 @@ classdef sawyer < handle % setup the UR3 robot
         function GetRobot(self, roboNum) % Setup Robot Parameters
             pause(0.001);
             L0 = Link('d',0.317,    'a',0.081,      'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(-345), deg2rad(345)]);
-            L1 = Link('d',0.1925,   'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(-345), deg2rad(345)]);
+            L1 = Link('d',0.1925,   'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(90),   deg2rad(270)]);
             L2 = Link('d',0.4,      'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(-345), deg2rad(345)]);
             L3 = Link('d',0.1685,   'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(-345), deg2rad(345)]);
             L4 = Link('d',0.4,      'a',0,          'alpha',-pi/2,  'offset',0, 'qlim', [deg2rad(-345), deg2rad(345)]);

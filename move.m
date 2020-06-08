@@ -1,13 +1,15 @@
 classdef move < handle % Movement of robots or bodies
     properties
+        bodies;
+        
     end
     
     methods
-        function self = move()
-           
+        function self = move(robot, bodies)
+           self.bodies = bodies;
         end
         
-        function rmrcStartToEnd(self, robot, startPose, startQ, endPose)
+        function rmrcStartToEnd(self, robot, startPose, startQ, endPose, bodies)
             % A significant portion of this function comes from the Lab 9
             % code
             t = 20; % time * stepInterval                                   % Total time (s)
@@ -59,13 +61,12 @@ classdef move < handle % Movement of robots or bodies
                 deltaTheta = tr2rpy(Rd*Ra');                                            % Convert rotation matrix to RPY angles
                 xdot = W*[linear_velocity;angular_velocity];                          	% Calculate end-effector velocity to reach next waypoint.
                 J = robot.model.jacob0(qMatrix(i,:));                                   % Get Jacobian at current joint state
-                m(i) = sqrt(det(J*J'))
+                m(i) = sqrt(det(J*J'));
                 if m(i) < lambdaThreshhold                                              % If manipulability is less than given threshold
                     lambda = (1 - m(i)/lambdaThreshhold)*20E-2;
                 else
                     lambda = 0;
                 end
-                lambda
                 invJ_dls = inv(J'*J + lambda *eye(robot.model.n))*J';                   % DLS Inverse
                 qdot(i,:) = (invJ_dls*xdot)';                                           % Solve the RMRC equation (you may need to transpose the         vector)
                 for j = 1:robot.model.n                                                 % Loop through joints 1 to 6
@@ -76,17 +77,28 @@ classdef move < handle % Movement of robots or bodies
                     end
                 end
                 qMatrix(i+1,:) = qMatrix(i,:) + deltaT*qdot(i,:);                       % Update next joint state based on joint velocities
+                             
                 %positionError(:,i) = x(:,i+1) - T(1:3,4);                              % For plotting
                 %angleError(:,i) = deltaTheta;                                          % For plotting
             end
             % Plot the results
+            isCollision = true;
+            q2 = robot.model.ikcon(endPose);
+            qWaypoints = [startQ;q2];
+            j = 1;
+            for i = 1:100:size(qMatrix,1)
+                qMatrixScaled(j,:) = qMatrix(i,:);
+                j = j+1;
+            end
+            
+            CollisionAvoid(robot, qWaypoints, self.bodies, isCollision, q2, qMatrixScaled, 1);
             animateMatrix(self, robot, qMatrix);
         end
         
         function animateMatrix(self, robot, qMatrix)
             stepInterval = 10;
             for step = 1:stepInterval:size(qMatrix,1)
-                q = qMatrix(step,:)
+                q = qMatrix(step,:);
                 robot.model.animate(q);
                 pause(0.001);
             end

@@ -5,9 +5,9 @@ classdef body < handle % class to handle setting up of the static body
         workspace;
         location;
         faceNormals;
-        Face;
-        Vertex;
-        Normals;
+        faces;
+        vertex;
+        normals;
         floorOffset;
     end
     
@@ -45,10 +45,10 @@ classdef body < handle % class to handle setting up of the static body
                 self.faceNormals{1}(faceIndex,:) = unit(cross(v2-v1,v3-v1));
             end
             
-            self.Face = cell2mat(self.model.faces(1));
-            self.Vertex = cell2mat(self.model.points(1));
-            self.Vertex(:,3) = self.Vertex(:,3)+self.floorOffset;
-            self.Normals = cell2mat(self.faceNormals(1));
+            self.faces = cell2mat(self.model.faces(1));
+            self.vertex = cell2mat(self.model.points(1));
+            self.vertex(:,3) = self.vertex(:,3)+self.floorOffset;
+            self.normals = cell2mat(self.faceNormals(1));
             
             for linkIndex = 0:self.model.n
                 handles = findobj('Tag', self.model.name);
