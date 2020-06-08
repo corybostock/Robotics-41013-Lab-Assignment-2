@@ -6,7 +6,7 @@ clf
 clear
 
 % Init Workspace
- startup_rvc;                                                                % Ensuring robotics toolbox is active and functional
+% startup_rvc;                                                                % Ensuring robotics toolbox is active and functional
 
 mode = 1;
 switch (mode)
@@ -16,7 +16,7 @@ switch (mode)
        floorOffset = (-1.0896/2);                                           % measured height or table in table.ply
        objectOffset = transl(0, 0 , -0.1);                                  % offset to lower endeffector onto object 
        workSpace = [-2.5 2.5 -2.5 2.5 (2*floorOffset) 2];
-       %workSpace = [-1 1 -1 1 -0.1 1.5]; 
+       workSpace = [-1 1 -1 1 -0.1 1.5]; 
        axis(workSpace);
        hold on;
        
@@ -50,7 +50,7 @@ switch (mode)
        motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
        motion.rmrcToPointFromCurrent(sawyer1, tomatoBaseCoord);
        motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
-       motion.rmrcToPointFromCurrent(sawyer1, carrotBaseCoord0);
+       motion.rmrcToPointFromCurrent(sawyer1, carrotBaseCoord);
        motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
        motion.rmrcToPointFromCurrent(sawyer1, lettuceBaseCoord);
        motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);

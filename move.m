@@ -7,13 +7,15 @@ classdef move < handle % Movement of robots or bodies
            
         end
         
-        function rmrcStartToEnd(self, robot, startPose, endPose)
-            t = 20; % time * stepInterval                                                          % Total time (s)
+        function rmrcStartToEnd(self, robot, startPose, startQ, endPose)
+            % A significant portion of this function comes from the Lab 9
+            % code
+            t = 20; % time * stepInterval                                   % Total time (s)
             deltaT = 0.02;                                                  % Control frequency
             steps = t/deltaT;                                               % No. of steps for simulation
-            lambdaThreshhold = 0.3;                                       % Threshold value for manipulability/Damped Least Squares
-%             dampingValue = (1 - m(i)/lambdaThreshhold)*5E-2;
-            W = diag([1 1 1 0 0 0]);                                  % Weighting matrix for the velocity vector
+            lambdaThreshhold = 0.8;                                         % Threshold value for manipulability/Damped Least Squares
+            % dampingValue = (1 - m(i)/lambdaThreshhold)*5E-2;
+            W = diag([1 1 1 0.1 0.1 0.1]);                                  % Weighting matrix for the velocity vector
 
             % Allocate array data
             m               = zeros(steps,1);                               % Array for Measure of Manipulability
@@ -21,8 +23,8 @@ classdef move < handle % Movement of robots or bodies
             qdot            = zeros(steps,robot.model.n);                   % Array for joint velocities
             theta           = zeros(3,steps);                               % Array for roll-pitch-yaw angles
             x               = zeros(3,steps);                               % Array for x-y-z trajectory
-            positionError   = zeros(3,steps);                               % For plotting trajectory error
-            angleError      = zeros(3,steps);                               % For plotting trajectory error
+            %positionError   = zeros(3,steps);                               % For plotting trajectory error
+            %angleError      = zeros(3,steps);                               % For plotting trajectory error
             
             p1Mask = startPose(1:3,4);
             p2Mask = endPose(1:3,4);
@@ -36,13 +38,13 @@ classdef move < handle % Movement of robots or bodies
                 x(1,i) = xs(i);                 % Points in x
                 x(2,i) = ys(i);                 % Points in y
                 x(3,i) = zs(i);                 % Points in z
-                theta(1,i) = 180;               % Roll angle 
-                theta(2,i) = 0;                 % Pitch angle
-                theta(3,i) = 0;                 % Yaw angle
+                theta(1,i) = -90;               % Roll angle 
+                theta(2,i) = -90;               % Pitch angle
+                theta(3,i) = 90;                % Yaw angle
             end
 
-            T = [rpy2r(theta(1,1),theta(2,1),theta(3,1)) x(:,1);zeros(1,3) 1];          % Create transformation of first point and angle
-            qMatrix(1,:) = robot.model.getpos();                                        % Solve joint angles to achieve first waypoint
+            T = [rpy2r(theta(1,1),theta(2,1),theta(3,1)) x(:,1);zeros(1,3) 1];       % Create transformation of first point and angle
+            qMatrix(1,:) = startQ;                                                   % Solve joint angles to achieve first waypoint
 
             % Track the trajectory with RMRC
             for i = 1:steps-1
@@ -57,14 +59,15 @@ classdef move < handle % Movement of robots or bodies
                 deltaTheta = tr2rpy(Rd*Ra');                                            % Convert rotation matrix to RPY angles
                 xdot = W*[linear_velocity;angular_velocity];                          	% Calculate end-effector velocity to reach next waypoint.
                 J = robot.model.jacob0(qMatrix(i,:));                                   % Get Jacobian at current joint state
-                m(i) = sqrt(det(J*J'));
-                if m(i) < lambdaThreshhold                                                       % If manipulability is less than given threshold
-                    lambda = (1 - m(i)/lambdaThreshhold)*5E-2;
+                m(i) = sqrt(det(J*J'))
+                if m(i) < lambdaThreshhold                                              % If manipulability is less than given threshold
+                    lambda = (1 - m(i)/lambdaThreshhold)*20E-2;
                 else
                     lambda = 0;
                 end
-                invJ_dls = inv(J'*J + lambda *eye(robot.model.n))*J';                       % DLS Inverse
-                qdot(i,:) = (invJ_dls*xdot)';                                               % Solve the RMRC equation (you may need to transpose the         vector)
+                lambda
+                invJ_dls = inv(J'*J + lambda *eye(robot.model.n))*J';                   % DLS Inverse
+                qdot(i,:) = (invJ_dls*xdot)';                                           % Solve the RMRC equation (you may need to transpose the         vector)
                 for j = 1:robot.model.n                                                 % Loop through joints 1 to 6
                     if qMatrix(i,j) + deltaT*qdot(i,j) < robot.model.qlim(j,1)          % If next joint angle is lower than joint limit...
                         qdot(i,j) = 0; % Stop the motor
@@ -73,8 +76,8 @@ classdef move < handle % Movement of robots or bodies
                     end
                 end
                 qMatrix(i+1,:) = qMatrix(i,:) + deltaT*qdot(i,:);                       % Update next joint state based on joint velocities
-                positionError(:,i) = x(:,i+1) - T(1:3,4);                               % For plotting
-                angleError(:,i) = deltaTheta;                                           % For plotting
+                %positionError(:,i) = x(:,i+1) - T(1:3,4);                              % For plotting
+                %angleError(:,i) = deltaTheta;                                          % For plotting
             end
             % Plot the results
             animateMatrix(self, robot, qMatrix);
@@ -91,7 +94,8 @@ classdef move < handle % Movement of robots or bodies
         
         function rmrcToPointFromCurrent(self, robot, endPose)
             startPose = robot.model.fkine(robot.model.getpos());
-            rmrcStartToEnd(self, robot, startPose, endPose);
+            startQ    = robot.model.getpos();
+            rmrcStartToEnd(self, robot, startPose, startQ, endPose);
         end
     end
 end
