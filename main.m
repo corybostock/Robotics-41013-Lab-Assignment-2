@@ -35,14 +35,14 @@ switch (mode)
        sawyer1     = sawyer(workSpace, 1, sawyerBase);
        
        % Init bodies
-       table       = body(workSpace, 'table',       transl(0,0,floorOffset));     % Dimensions of the table (x, y, z) = (1.4880, 2.3383, 1.0896)
-       bowl        = body(workSpace, 'bowlimproved',bowlBaseCoord);
-       mushroom    = body(workSpace, 'mushroom',    mushroomBaseCoord);
-       tomato      = body(workSpace, 'tomato',      tomatoBaseCoord);
-       carrot      = body(workSpace, 'carrot',      carrotBaseCoord);
-       lettuce     = body(workSpace, 'lettuce',     lettuceBaseCoord);
-       onion       = body(workSpace, 'onion',       onionBaseCoord);
-       tomatoSauce = body(workSpace, 'tomatosauce', tomatoSauceBaseCoord);
+       table       = body(workSpace, 'table',       transl(0,0,floorOffset),    floorOffset);     % Dimensions of the table (x, y, z) = (1.4880, 2.3383, 1.0896)
+       bowl        = body(workSpace, 'bowlimproved',bowlBaseCoord,              floorOffset);
+       mushroom    = body(workSpace, 'mushroom',    mushroomBaseCoord,          floorOffset);
+       tomato      = body(workSpace, 'tomato',      tomatoBaseCoord,            floorOffset);
+       carrot      = body(workSpace, 'carrot',      carrotBaseCoord,            floorOffset);
+       lettuce     = body(workSpace, 'lettuce',     lettuceBaseCoord,           floorOffset);
+       onion       = body(workSpace, 'onion',       onionBaseCoord,             floorOffset);
+       tomatoSauce = body(workSpace, 'tomatosauce', tomatoSauceBaseCoord,       floorOffset);
        
        motion.rmrcToPointFromCurrent(sawyer1, bowlBaseCoord);
        motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
