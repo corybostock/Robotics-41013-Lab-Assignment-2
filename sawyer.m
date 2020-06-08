@@ -18,7 +18,8 @@ classdef sawyer < handle % setup the UR3 robot
             self.defaultq = deg2rad(self.defaultq);
             self.currentJoints = self.defaultq;
             self.model.base = location;
-            self.PlotAndColour(self.currentJoints);            
+            self.PlotAndColour(self.currentJoints);
+            self.model.delay = 0.001;
         end
         
         function PlotAndColour(self, q)

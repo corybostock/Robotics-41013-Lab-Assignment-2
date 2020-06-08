@@ -9,7 +9,7 @@ while (iscollision)
         qMatrixJoin = InterpolateWaypointRadians(qWaypoints(i:i+1,:),deg2rad(10));
         if ~IsCollision(robot.model,qMatrixJoin,bodies(j).faces,bodies(j).vertex,bodies(j).normals)
             qMatrix = [qMatrix; qMatrixJoin];
-            robot.model.animate(qMatrixJoin);
+%             robot.model.animate(qMatrixJoin);
             size(qMatrix)
             iscollision = false;
             checkedTillWaypoint = i+1;
