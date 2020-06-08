@@ -1,4 +1,4 @@
-function [collisionResponse, noCollision] = CollisionReact(robot,faces, vertex, normals, trajectory)
+function CollisionReact(robot,faces, vertex, normals, trajectory)
 %implements the isCollision class to come to a halt before a collision
 %happens
 for step = 1:size(trajectory,1)
@@ -6,10 +6,10 @@ for step = 1:size(trajectory,1)
     IsCollision(robot.model, q, faces, vertex, normals)
 
     if IsCollision(robot.model, q, faces, vertex, normals) 
-        collisionResponse = 'Collsion avoided';
+        display( 'Collsion avoided');
         return
     else
-        noCollision = 'all g to keep moving'; 
+        display( 'all g to keep moving'); 
     end
     
     robot.model.animate(q);
