@@ -23,6 +23,7 @@ switch (mode)
        sawyerBase              = transl(0,0,0);
        sawywerInit             = transl(0.2, 0, 1.2);
        bowlBaseCoord           = transl(-0.4, 0.5, 0);
+       knifeCoord              = transl(0, -0.5, 0.42) * trotx(deg2rad(0)) * troty(deg2rad(90));
        mushroomBaseCoord       = transl(0.6, -0.4, 0.0);
        tomatoBaseCoord         = transl(0.6, 0.0, 0.0);
        carrotBaseCoord         = transl(0.6, 0.4, 0.0);
@@ -37,6 +38,7 @@ switch (mode)
        % Init bodies
        table       = body(workSpace, 'table',       transl(0,0,floorOffset),    floorOffset);     % Dimensions of the table (x, y, z) = (1.4880, 2.3383, 1.0896)
        bowl        = body(workSpace, 'bowlimproved',bowlBaseCoord,              floorOffset);
+       knife       = body(workSpace, 'knife',       knifeCoord,                 floorOffset);
        mushroom    = body(workSpace, 'mushroom',    mushroomBaseCoord,          floorOffset);
        tomato      = body(workSpace, 'tomato',      tomatoBaseCoord,            floorOffset);
        carrot      = body(workSpace, 'carrot',      carrotBaseCoord,            floorOffset);
@@ -44,19 +46,29 @@ switch (mode)
        onion       = body(workSpace, 'onion',       onionBaseCoord,             floorOffset);
        tomatoSauce = body(workSpace, 'tomatosauce', tomatoSauceBaseCoord,       floorOffset);
        
-       bodies = [table, bowl, mushroom, tomato, carrot, lettuce, onion, tomatoSauce];
-       motion      = move(sawyer1, bodies);
+       bodies = [table, bowl, knife, mushroom, tomato, carrot, lettuce, onion, tomatoSauce];
+       motion = move(sawyer1, bodies);
        
-       motion.rmrcToPointFromCurrent(sawyer1, bowlBaseCoord);
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
-       motion.rmrcToPointFromCurrent(sawyer1, mushroomBaseCoord);
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
-       motion.rmrcToPointFromCurrent(sawyer1, tomatoBaseCoord);
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
-       motion.rmrcToPointFromCurrent(sawyer1, carrotBaseCoord);
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
-       motion.rmrcToPointFromCurrent(sawyer1, lettuceBaseCoord);
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
-       motion.rmrcToPointFromCurrent(sawyer1, onionBaseCoord);
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
+       motion.rmrcToPointFromCurrent(sawyer1, knifeCoord);
+       motion.rmrcToPointFromCurrentWBodies(sawyer1, sawywerInit, [knife]);
+       
+       % Cutting Mushroom
+       motion.cutVeg(sawyer1, [knife], mushroomBaseCoord, transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.2, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)));
+       
+       % Cutting Tomato
+       motion.rmrcToPointFromCurrentWBodies(sawyer1, tomatoBaseCoord * transl(0,0,0.4), [knife]);
+       motion.cutVeg(sawyer1, [knife], tomatoBaseCoord,   transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.05, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)));
+       
+       % Cutting Carrot
+       
+       
+       % Cutting Lettuce
+       
+       
+       % Cutting Onion
+       
+       
+       % Dressing
+       
+
 end

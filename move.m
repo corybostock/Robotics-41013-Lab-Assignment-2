@@ -1,7 +1,7 @@
 classdef move < handle % Movement of robots or bodies
     properties
         bodies;
-        
+        qMatrix_;
     end
     
     methods
@@ -91,12 +91,11 @@ classdef move < handle % Movement of robots or bodies
                 j = j+1;
             end
             
-            CollisionAvoid(robot, qWaypoints, self.bodies, isCollision, q2, qMatrixScaled, 1);
-            animateMatrix(self, robot, qMatrix);
+            %CollisionAvoid(robot, qWaypoints, self.bodies, isCollision, q2, qMatrixScaled, 1);
+            self.qMatrix_ = qMatrix;
         end
         
-        function animateMatrix(self, robot, qMatrix)
-            stepInterval = 10;
+        function animateMatrix(self, robot, qMatrix, stepInterval)
             for step = 1:stepInterval:size(qMatrix,1)
                 q = qMatrix(step,:);
                 robot.model.animate(q);
@@ -104,10 +103,39 @@ classdef move < handle % Movement of robots or bodies
             end
         end
         
+        function animateWObjects(self, robot, qMatrix, bodies, stepInterval)
+            for step = 1:stepInterval:size(qMatrix,1)
+                q = qMatrix(step,:);
+                robot.model.animate(q);
+                newBase = robot.model.fkine(q);
+                for i = 1:size(bodies,2)
+                    bodies(i).model.base = newBase;
+                    bodies(i).model.animate(0);
+                end
+                pause(0.001);
+            end
+        end
+                
         function rmrcToPointFromCurrent(self, robot, endPose)
             startPose = robot.model.fkine(robot.model.getpos());
             startQ    = robot.model.getpos();
             rmrcStartToEnd(self, robot, startPose, startQ, endPose);
+            animateMatrix(self, robot, self.qMatrix_, 10);
         end
+        
+        function rmrcToPointFromCurrentWBodies(self, robot, endPose, bodies)
+            startPose = robot.model.fkine(robot.model.getpos());
+            startQ    = robot.model.getpos();
+            rmrcStartToEnd(self, robot, startPose, startQ, endPose);
+            animateWObjects(self, robot, self.qMatrix_, bodies, 30);
+        end
+        
+        function cutVeg(self, robot, bodies, base, offset1, offset2, offset3, offset4)
+            rmrcToPointFromCurrentWBodies(self, robot, base * offset1, bodies);
+            rmrcToPointFromCurrentWBodies(self, robot, base * offset2, bodies);
+            rmrcToPointFromCurrentWBodies(self, robot, base * offset3, bodies);
+            rmrcToPointFromCurrentWBodies(self, robot, base * offset4, bodies);
+        end
+        
     end
 end
