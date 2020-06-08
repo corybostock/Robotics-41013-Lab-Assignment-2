@@ -26,7 +26,7 @@ switch (mode)
        knifeCoord              = transl(0, -0.5, 0.42) * trotx(deg2rad(0)) * troty(deg2rad(90));
        mushroomBaseCoord       = transl(0.6, -0.4, 0.0);
        tomatoBaseCoord         = transl(0.6, 0.0, 0.0);
-       carrotBaseCoord         = transl(0.6, 0.4, 0.0);
+       carrotBaseCoord         = transl(0.4, -0.2, 0.0);
        lettuceBaseCoord        = transl(0.4, 0.5, 0.0);
        onionBaseCoord          = transl(0.0, 0.6, 0.0);
        tomatoSauceBaseCoord    = transl(-0.2, 0.5 ,0.0);
@@ -53,22 +53,22 @@ switch (mode)
        motion.rmrcToPointFromCurrentWBodies(sawyer1, sawywerInit, [knife]);
        
        % Cutting Mushroom
-       motion.cutVeg(sawyer1, [knife], mushroomBaseCoord, transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.2, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)));
+       %motion.cutVeg(sawyer1, [knife], mushroomBaseCoord, transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.2, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)));
        
        % Cutting Tomato
-       motion.rmrcToPointFromCurrentWBodies(sawyer1, tomatoBaseCoord * transl(0,0,0.4), [knife]);
-       motion.cutVeg(sawyer1, [knife], tomatoBaseCoord,   transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.05, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)));
+       %motion.rmrcToPointFromCurrentWBodies(sawyer1, tomatoBaseCoord * transl(0,0,0.4), [knife]);
+       %motion.cutVeg(sawyer1, [knife], tomatoBaseCoord,   transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.05, 0.35) * trotz(deg2rad(90)), transl(-0.1, 0.3, 0.27) * trotz(deg2rad(90)));
        
        % Cutting Carrot
+       motion.rmrcToPointFromCurrentWBodies(sawyer1, carrotBaseCoord * transl(0,0.1,0.4) * trotz(deg2rad(90)), [knife]);
+       motion.cutVeg(sawyer1, [knife], carrotBaseCoord,   transl(-0.2, 0.5, 0.27) * trotz(deg2rad(145)), transl(-0.1, 0.3, 0.35) * trotz(deg2rad(90)), transl(0, 0.5, 0.27) * trotz(deg2rad(90)), transl(0, 0.3, 0.27) * trotz(deg2rad(90)));
+       
+       % Put knife down
+       motion.rmrcToPointFromCurrentWBodies(sawyer1, sawywerInit, [knife]);
+       motion.rmrcToPointFromCurrentWBodies(sawyer1, transl(0,-0.4, 0.26),  [knife]);
+       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
        
        
-       % Cutting Lettuce
-       
-       
-       % Cutting Onion
-       
-       
-       % Dressing
        
 
 end
