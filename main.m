@@ -23,7 +23,7 @@ switch (mode)
        sawyerBase              = transl(0,0,0);
        sawywerInit             = transl(0.2, 0, 1.2);
        bowlBaseCoord           = transl(-0.4, 0.5, 0);
-       knifeCoord              = transl(0, -0.5, 0.22) * trotx(deg2rad(0)) * troty(deg2rad(90));
+       knifeCoord              = transl(0, -0.5, 0.42) * trotx(deg2rad(0)) * troty(deg2rad(90));
        mushroomBaseCoord       = transl(0.6, -0.4, 0.0);
        tomatoBaseCoord         = transl(0.6, 0.0, 0.0);
        carrotBaseCoord         = transl(0.6, 0.4, 0.0);
