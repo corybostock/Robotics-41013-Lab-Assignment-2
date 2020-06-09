@@ -12,13 +12,13 @@ for qIndex = 1:size(qMatrix,1)
 %     q = qMatrix(qIndex,:);
     
     % Get the transform of every joint (i.e. start and end of every link)  
-    tr = robot.model.base(1:3,4)
+    tr = GetLinkPoses(qMatrix(qIndex,:), robot);
 
     % Go through each link and also each triangle face
-    for i = 1 : 1    
+    for i = 2 : size(tr,3)-1    
         for faceIndex = 1:size(faces,1)
             vertOnPlane = vertex(faces(faceIndex,1)',:);
-            [intersectP,check] = LinePlaneIntersection(faceNormals(faceIndex,:),vertOnPlane,tr(1:3,4,i)',tr(1:3,4,i)'); 
+            [intersectP,check] = LinePlaneIntersection(faceNormals(faceIndex,:),vertOnPlane,tr(1:3,4,i)',tr(1:3,4,i+1)'); 
             if check == 1 && IsIntersectionPointInsideTriangle(intersectP,vertex(faces(faceIndex,:)',:))
                 display('AT RISK OF COLLSION');
                 plot3(intersectP(1),intersectP(2),intersectP(3),'g*');
@@ -89,4 +89,3 @@ for i = 1:length(links)
     transforms(:,:,i + 1) = current_transform;
 end
 end
-
