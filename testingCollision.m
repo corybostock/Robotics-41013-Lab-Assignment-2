@@ -15,27 +15,34 @@ sawyerBase = transl(0,0,0);
 %sawyer1 = sawyer(workSpace, 1, sawyerBase);
 hold on;
 %table = body(workSpace, 'table', transl(0,0,1));
-%table = body(workSpace, 'table', transl(0,0,floorOffset));
-lightCurtain  = body(workSpace, 'fence', transl(1, 1, floorOffset), 0);
-hand = body(workSpace, 'hand', transl(2, 2, 0),0);
+table = body(workSpace, 'table', transl(0,0,0), floorOffset);
+line.X = [-1, -1, 1, 1];
+line.Y = [-1.5, 1.5, 1.5, -1.5];
+line.Z = [-0.5, -0.5, -0.5, -0.5];
 
-steps = 50;
-inity = 2
-xVAL = 2
-zVAL = 0
-finaly = 0
-array = lspb(inity,finaly,steps)
-lightCurtainFace = cell2mat(lightCurtain.model.faces(1))
-lightCurtainVertex = cell2mat(lightCurtain.model.points(1))
-lightCurtainNormals = cell2mat(lightCurtain.faceNormals(1))
-
-for i = 1:steps
-	hand.model.base = transl(xVAL,array(i),zVAL);
-    CollisionReact(hand, lightCurtainFace, lightCurtainVertex, lightCurtainNormals, array)
-	hand.model.animate(0);
-    
+for lineIt = line.Z(1):0.1:2
+    plot3([line.X(1),line.X(2)],[line.Y(1),line.Y(2)],[lineIt, lineIt],'--b','LineWidth',0.2);
+    plot3([line.X(2),line.X(3)],[line.Y(2),line.Y(3)],[lineIt, lineIt],'--b','LineWidth',0.2);
+    plot3([line.X(3),line.X(4)],[line.Y(3),line.Y(4)],[lineIt, lineIt],'--b','LineWidth',0.2);
+    plot3([line.X(4),line.X(1)],[line.Y(4),line.Y(1)],[lineIt, lineIt],'--b','LineWidth',0.2);
 end
 
+%lightCurtain  = body(workSpace, 'fence', transl(1, 1, floorOffset), 0);
+hand = body(workSpace, 'hand', transl(2, 0, 0.5),0);
+
+steps = 50;
+initx = 2
+yVAL = 0
+zVAL = 0.5
+finalx = 1
+array = lspb(initx,finalx,steps)
+
+for i = 1:steps
+	hand.model.base = transl(array(i),yVAL,zVAL);
+	hand.model.animate(0);
+end
+  %IsCollision(hand,50,lightCurtainFace,lightCurtainVertex,lightCurtainNormals,false)
+   % CollisionReact(hand, lightCurtainFace, lightCurtainVertex, lightCurtainNormals, array)
 %r = 0.05;
 %radii = [r,r,r];
 

@@ -12,7 +12,7 @@ for step = 1:size(trajectory,1)
         display( 'all g to keep moving'); 
     end
     
-    robot.model.animate(q);
+   % robot.model.animate(q);
 end
 end
 

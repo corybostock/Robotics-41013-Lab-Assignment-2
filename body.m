@@ -25,7 +25,7 @@ classdef body < handle % class to handle setting up of the static body
                 self.model.points{linkIndex + 1} = vertexData;
             end
             
-            L1 = Link('alpha',0,'a',0,'d',0,'offset',0);
+            L1 = Link('alpha',0,'a',0.2,'d',0.2,'offset',0);
             self.model = SerialLink(L1, 'name' , name);
             % 1 link robot used to simulate bodys for simplicity
             self.model.faces = {faceData,[]};
