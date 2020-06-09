@@ -8,7 +8,7 @@ clear
 % Init Workspace
 % startup_rvc;                                                                % Ensuring robotics toolbox is active and functional
 
-mode = 1;
+mode = 0;
 switch (mode)
     case 0
         run('gui.mlapp');        
@@ -69,7 +69,6 @@ switch (mode)
        motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
        
        % Put things in bowl
-       motion.rmrcToPointFromCurrent(sawyer1, sawywerInit);
        motion.rmrcToPointFromCurrent(sawyer1, mushroomBaseCoord);
        motion.rmrcToPointFromCurrentWBodies(sawyer1, sawywerInit,    [mushroom]);
        motion.rmrcToPointFromCurrentWBodies(sawyer1, bowlBaseCoord,  [mushroom]);
