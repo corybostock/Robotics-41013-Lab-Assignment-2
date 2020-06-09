@@ -91,7 +91,7 @@ classdef move < handle % Movement of robots or bodies
                 j = j+1;
             end
             
-            %CollisionAvoid(robot, qWaypoints, self.bodies, isCollision, q2, qMatrixScaled, 1);
+            CollisionAvoid(robot, qWaypoints, self.bodies, isCollision, q2, qMatrixScaled, 1);
             self.qMatrix_ = qMatrix;
         end
         
