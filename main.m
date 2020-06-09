@@ -46,6 +46,9 @@ switch (mode)
        onion       = body(workSpace, 'onion',       onionBaseCoord,             floorOffset);
        tomatoSauce = body(workSpace, 'tomatosauce', tomatoSauceBaseCoord,       floorOffset);
        
+       estop1      = body(workSpace, 'estop1',      transl(1.0, 1.0, 0.0) * trotz(deg2rad(-90)),     floorOffset);
+       estop2      = body(workSpace, 'estop2',      transl(-1.0, -1.0, 0.0)* trotz(deg2rad(90)),    floorOffset);
+       
        bodies = [table, bowl, knife, mushroom, tomato, carrot, lettuce, onion, tomatoSauce];
        motion = move(sawyer1, bodies);
        
