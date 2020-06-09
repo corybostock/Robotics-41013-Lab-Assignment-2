@@ -9,7 +9,7 @@ hold on;
 floorOffset = (-1.0896/2);  
 workSpace = [-2.5 2.5 -2.5 2.5 (2*floorOffset) 2];
 sawyerBase = transl(0,0,0);
-motion = move();
+
 
 %put models in the workspace
 sawyer1 = sawyer(workSpace, 1, sawyerBase);
@@ -20,7 +20,8 @@ hand = bodyCopy(workSpace, 'hand', transl(2, 0, 0.5));
 handFace = cell2mat(hand.model.faces(1));
 handVertex = cell2mat(hand.model.points(1));
 handNormals = cell2mat(hand.faceNormals(1));
-
+bodies = [table, hand];
+motion = move(sawyer1, bodies);
 line.X = [-1, -1, 1, 1];
 line.Y = [-1.5, 1.5, 1.5, -1.5];
 line.Z = [-0.5, -0.5, -0.5, -0.5];
@@ -59,18 +60,18 @@ for i = 1:steps
     hand.model.base()
     hand.model.animate(0);
   %   for i = 1 : 50
-        for faceIndex = 1:size(handFace,1)
-            vertOnPlane = handVertex(handFace(faceIndex,1)',:);
-            [intersectP,check] = LinePlaneIntersection(handNormals(faceIndex,:),vertOnPlane,...
-                            [line.X(1),line.Y(1),(line.Z(1)-(i/10))],[line.X(2),line.Y(2),(line.Z(2)-(i/10))]);
-            disp(check)
-            if check == 1 && IsIntersectionPointInsideTriangle(intersectP,handVertex(handFace(faceIndex,:)',:))
-                disp('HAND IN WORKSPACE !STOP!')
-                plot3(intersectP(1),intersectP(2),intersectP(3),'g*')
-                intersect = true;
-                return
-            end
-        end
+%         for faceIndex = 1:size(handFace,1)
+%             vertOnPlane = handVertex(handFace(faceIndex,1)',:);
+%             [intersectP,check] = LinePlaneIntersection(handNormals(faceIndex,:),vertOnPlane,...
+%                             [line.X(1),line.Y(1),(line.Z(1)-(i/10))],[line.X(2),line.Y(2),(line.Z(2)-(i/10))]);
+%             disp(check)
+%             if check == 1 && IsIntersectionPointInsideTriangle(intersectP,handVertex(handFace(faceIndex,:)',:))
+%                 disp('HAND IN WORKSPACE !STOP!')
+%                 plot3(intersectP(1),intersectP(2),intersectP(3),'g*')
+%                 intersect = true;
+%                 return
+%             end
+%         end
    % end
     
 end

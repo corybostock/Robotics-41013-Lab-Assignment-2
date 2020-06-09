@@ -77,5 +77,19 @@ classdef sawyer < handle % setup the UR3 robot
                 end
             end
         end
+        
+        function lightCurtain(self)
+            line.X = [-1, -1, 1, 1];
+            line.Y = [-1.5, 1.5, 1.5, -1.5];
+            line.Z = [-0.5, -0.5, -0.5, -0.5];
+            
+            for lineIt = line.Z(1):0.1:2
+                plot3([line.X(1),line.X(2)],[line.Y(1),line.Y(2)],[lineIt, lineIt],'--b','LineWidth',0.2);
+                plot3([line.X(2),line.X(3)],[line.Y(2),line.Y(3)],[lineIt, lineIt],'--b','LineWidth',0.2);
+                plot3([line.X(3),line.X(4)],[line.Y(3),line.Y(4)],[lineIt, lineIt],'--b','LineWidth',0.2);
+                plot3([line.X(4),line.X(1)],[line.Y(4),line.Y(1)],[lineIt, lineIt],'--b','LineWidth',0.2);
+            end
+        end
+        
     end
 end
